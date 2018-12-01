@@ -2464,6 +2464,9 @@
     <history-entry file="PrimeiroTeste() - 2018.12.01 at 13h 13m 37s.xml">
       <configuration name="PrimeiroTeste()" configurationId="AndroidTestRunConfigurationType" />
     </history-entry>
+    <history-entry file="TesteNumero7() - 2018.12.01 at 13h 20m 28s.xml">
+      <configuration name="TesteNumero7()" configurationId="AndroidTestRunConfigurationType" />
+    </history-entry>
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">

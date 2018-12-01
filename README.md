@@ -4,6 +4,13 @@ Esse projeto é para os analistas de Testes Utilizarem o Espresso Android Test.
 
 Projeto editado a parte de espresso android.
 
+
+Esse projeto tem:
+Cucumber + Espresso android.
+Modo do espresso android básico.
+Modo do espresso android com estrutura Robots.
+
+
 License
 -------
 
