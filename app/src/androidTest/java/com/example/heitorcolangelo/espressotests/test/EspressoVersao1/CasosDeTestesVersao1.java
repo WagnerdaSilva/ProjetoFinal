@@ -67,6 +67,7 @@ public class CasosDeTestesVersao1 {
         onView(withId(R.id.login_button)).perform(click());
         onView(withText("Atenção")).inRoot(isDialog()).check(matches(isDisplayed()));
         onView(withText("Campo De Email Ou Senha Inválido")).inRoot(isDialog()).check(matches(isDisplayed()));
+        .sleeep(5);
 
     }
 
