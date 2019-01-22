@@ -1,47 +1,3 @@
-
-loadin799
-keyboard_arrow_down
-Updateskeyboard_arrow_down
-Supportkeyboard_arrow_down
-
-storage
-JOBS
-WORKFLOWS
-assessment
-INSIGHTS
-library_add
-ADD PROJECTS
-group
-TEAM
-SETTINGS
-Jobsloadin799EspressoQaNinjaProject master 13 (build)
-2.0
-Rerun workflow
-SUCCESS
-Finished:
-4 months ago (05:38)
-Previous:
-12
-Parallelism:
-1x out of 4x
-Queued:
-00:00 waiting + 00:01 in queue
-Resources:
-2CPU/4096MB
-Workflow:
-workflow
-Context:
-N/A
-Triggered by:
-loadin799 (pushed b1ed695)
-COMMITS (1)
-loadin799b1ed695test novo para results
-Test Summary
-Queue (00:01)
-Artifacts
-Configuration
-Timing
-Parameters
 version: 2
 jobs:
   build:
@@ -93,8 +49,3 @@ workflows:
   workflow:
     jobs:
     - build
-
-
-      - run:
-          name: Run Tests
-          command: ./gradlew clean build uiAutomationTest -x test -x signArchives
