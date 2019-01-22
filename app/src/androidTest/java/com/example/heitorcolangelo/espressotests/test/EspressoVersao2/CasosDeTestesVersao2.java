@@ -17,7 +17,7 @@ public class CasosDeTestesVersao2 {
             mActivityRule = new ActivityTestRule<>(LoginActivity.class, false, true);
 
     @Before
-    public void setup(){
+    public void setup()  {
 
 
     }
