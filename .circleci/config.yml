@@ -1,52 +1,100 @@
+
+loadin799
+keyboard_arrow_down
+Updateskeyboard_arrow_down
+Supportkeyboard_arrow_down
+
+storage
+JOBS
+WORKFLOWS
+assessment
+INSIGHTS
+library_add
+ADD PROJECTS
+group
+TEAM
+SETTINGS
+Jobsloadin799EspressoQaNinjaProject master 13 (build)
+2.0
+Rerun workflow
+SUCCESS
+Finished:
+4 months ago (05:38)
+Previous:
+12
+Parallelism:
+1x out of 4x
+Queued:
+00:00 waiting + 00:01 in queue
+Resources:
+2CPU/4096MB
+Workflow:
+workflow
+Context:
+N/A
+Triggered by:
+loadin799 (pushed b1ed695)
+COMMITS (1)
+loadin799b1ed695test novo para results
+Test Summary
+Queue (00:01)
+Artifacts
+Configuration
+Timing
+Parameters
 version: 2
 jobs:
   build:
     working_directory: ~/code
     docker:
-      - image: bitriseio/docker-android:v2017_09_09-06_45-b744
-
-    working_directory: ~/workspace
+    - image: circleci/android:api-26-alpha
     environment:
-      JVM_OPTS: -Xmx3200m
+    - JVM_OPTS: -Xmx3200m
     steps:
-      - checkout
+    - checkout
+    - restore_cache:
+        key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+    - run:
+        name: Download Dependencies
+        command: ./gradlew androidDependencies --stacktrace
+    - save_cache:
+        paths:
+        - ~/.gradle
+        key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       - run:
-         name: Chmod permissions #if permission for Gradlew Dependencies fail, use this.
-         command: sudo chmod +x ./gradlew
+           command: echo no | avdmanager create avd -n test -k "system-images;android-25;google_apis;armeabi-v7a"
+       - run:
+           command: /opt/android-sdk-linux/emulator/emulator -avd test -no-audio -no-window -no-boot-anim  -accel on
+           background: true
+       - run:
+           command: adb shell input keyevent 82
+       - run:
+           command: adb devices
+       - run:
+           command: echo y | adb devices
+    - run:
+        name: Wait emulator
+        command: |
+          # wait for it to have booted
+          circle-android wait-for-boot
+          # unlock the emulator screen
+          sleep 30
+          adb shell input keyevent 82
+    - run:
+        name: Run EspressoTests
+        command: ./gradlew connecteddebugAndroidTest
+    - store_artifacts:
+        path: app/build/reports
+        destination: reports
+    - store_test_results:
+        path: test-results
+workflows:
+  version: 2
+  workflow:
+    jobs:
+    - build
 
-      - run:
-          command: echo y | android update sdk -u -a -t tools
-      - run:
-          command: echo y | android update sdk -u -a -t platform-tools
-      - run:
-          command: echo y | android update sdk -u -a -t build-tools-25.0.2
-      - run:
-          command: echo y | android update sdk -u -a -t android-25
 
-      - run:
-          name: List available targets and other sdk modules
-          command: sdkmanager --list --include_obsolete --verbose
-      - run:
-          command: echo y | node --version
-      - run:
-          command: echo y | npm --version
-      - run:
-          command: sudo npm i -g appium --unsafe-perm=true --allow-root
-      - run:
-          name: List available targets and other sdk modules
-          command: sdkmanager --list --include_obsolete --verbose
-      - run:
-          command: echo no | avdmanager create avd -n test -k "system-images;android-25;google_apis;armeabi-v7a"
-      - run:
-          command: /opt/android-sdk-linux/emulator/emulator -avd test -no-audio -no-window -no-boot-anim  -accel on
-          background: true
-
-      - run:
-          command: adb shell input keyevent 82
-      - run:
-          command: adb devices
-      - run:
-          command: echo y | adb devices
       - run:
           name: Run Tests
           command: ./gradlew clean build uiAutomationTest -x test -x signArchives
